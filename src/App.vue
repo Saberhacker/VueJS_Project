@@ -1,76 +1,26 @@
 <template>
+  <!-- <h2>FullName - {{firstName}} {{lastName}}</h2>
+  <h2>Computed FullName - {{fullname}}</h2>
+   <button @click="ChangeFullName">Change Name</button>
+   <button @click="items.push({id:4, title: 'keyBoard', price: 50})">Add Item</button>
+  <h2>Total computed- {{total}}</h2>
+  <h2>Method Total - {{getTotal()}}</h2>
+  <input type="text" v-model="country">
+   <h2 v-for="item in expensiveItem" :key="item.id">
+    {{item.title}} - {{item.price}}
+   </h2> -->
+  <h2>Volume Tracker (0-20)</h2>
+  <h3>Current Volume - {{ volume }}</h3>
   <div>
-    <pre>
-    {{ JSON.stringify(formValues, null, 2) }}
-  </pre
-    >
+    <button @click="volume += 2">Increase</button>
+    <button @click="volume -= 2">Decrease</button>
   </div>
-  <form @submit.prevent="submitForm">
-    <div>
-      <label for="name">Name</label>
-      <input type="text" id="name" v-model.trim.lazy="formValues.name" />
-    </div>
-    <div>
-      <label for="profile">Profile</label>
-      <textarea
-        name="profile"
-        id="profile"
-        v-model="formValues.profileSummary"
-      ></textarea>
-    </div>
-    <div>
-      <label for="country">Country</label>
-      <select id="country" v-model="formValues.country">
-        <option value="">Select a country</option>
-        <option value="india">India</option>
-        <option value="Afghanistan">Afghanistan</option>
-        <option value="USA">USA</option>
-      </select>
-    </div>
-    <div>
-      <label for="job-location">Job Location</label>
-      <select id="job-location" multiple v-model="formValues.jobLocation">
-        <option value="india">India</option>
-        <option value="Afghanistan">Afghanistan</option>
-        <option value="USA">USA</option>
-      </select>
-    </div>
-    <div>
-      <input
-        type="checkbox"
-        id="remoteWork"
-        v-model="formValues.remoteWork"
-        true-value="yes"
-        false-value="no"
-      />
-      <label for="remoteWork">Open to remote Work?</label>
-    </div>
-    <div>
-      <label>Skill Set</label>
-      <input type="checkbox" id="html" value="html" v-model="formValues.skillSet">
-      <label for="html">HTML</label>
-      <input type="checkbox" id="css" value="css" v-model="formValues.skillSet">
-      <label for="css">CSS</label>
-      <input type="checkbox" id="js" value="js" v-model="formValues.skillSet">
-      <label for="js">JavaScript</label>
-    </div>
-      <div>
-      <label>Years of Experience</label>
-      <input type="radio" id="0-2" value="0-2" v-model="formValues.yearsOfExperience">
-      <label for="0-2">0-2</label>
-      <input type="radio" id="3-5" value="3-5" v-model="formValues.yearsOfExperience">
-      <label for="3-5">3-5</label>
-      <input type="radio" id="6-10" value="6-10" v-model="formValues.yearsOfExperience">
-      <label for="6-10">6-10</label>
-    </div>
-    <div>
-      <label for="age">Age</label>
-      <input type="number" @keyup.enter="submitForm" id="age" v-model.number="formValues.age">
-    </div>
-    <!-- <div>
-      <button>Submit</button>
-    </div> -->
-  </form>
+  <input type="text" v-model="movie" />
+  <input type="text" v-model="movieInfo.title" />
+  <input type="text" v-model="movieInfo.actor" />
+  <div>
+    <button @click="movieList.push('Wonder Woman')">Add movie</button>
+  </div>
 </template>
 
 <script>
@@ -78,23 +28,91 @@ export default {
   name: "App",
   data() {
     return {
-      formValues: {
-        name: "",
-        profileSummary: "",
-        country: "",
-        jobLocation: [],
-        remoteWork: "no",
-        skillSet: [],
-        yearsOfExperience: '',
-        age: null,
+      volume: 0,
+      movie: "Saber",
+      movieInfo: {
+        title: '',
+        actor: ''
       },
+      movieList: ['Batman','Superman']
+      // firstName: 'saber',
+      // lastName: 'seerat',
+      // items: [
+      //   {
+      //     id: 1,
+      //     title: 'TV',
+      //     price : 100
+      //   },
+      //   {
+      //     id: 2,
+      //     title: 'phone',
+      //     price : 200
+      //   },
+      //   {
+      //     id: 3,
+      //     title: 'Laptop',
+      //     price : 300
+      //   },
+      // ],
+      // country: ''
     };
   },
   methods: {
-    submitForm(){
-      // event.preventDefault()
-      console.log('Form Values',this.formValues);
-
+    //   getTotal(){
+    //     console.log('getTotal Method');
+    //     return this.items.reduce((total,curr) => (total = total + curr.price),0)
+    //   },
+    //   ChangeFullName(){
+    //     this.fullname = 'Yaser Zahed'
+    //   }
+    //   },
+    // computed:{
+    //   fullname: {
+    //     get(){
+    //       return `${this.firstName} ${this.lastName}`
+    //     },
+    //     set(value){
+    //       const names = value.split(' ')
+    //       this.firstName = names[0]
+    //       this.lastName = names[1]
+    //     }
+    //   },
+    //   total(){
+    //     console.log('Total Computed Property');
+    //     return this.items.reduce((total,curr) => (total = total + curr.price),0)
+    //   },
+    //   expensiveItem(){
+    //     return this.items.filter(item => item.price > 100)
+    //   }
+  },
+  computed: {},
+  watch: {
+    volume(newValue, oldValue) {
+      if (newValue > oldValue && oldValue === 16) {
+        alert(
+          "Listening to a high volume for a long time is damage your hearing"
+        );
+      }
+    },
+    movie: {
+      handler(newValue) {
+        console.log(`Calling API with movie name = ${newValue}`);
+      },
+      immediate: true
+    },
+    movieInfo: {
+      handler(newValue){
+        console.log(
+          `Calling API with movie title = ${newValue.title} and actor = ${newValue.actor}`
+        );
+      },
+      deep: true
+    },
+    movieList: {
+      handler(newValue){
+        console.log(`Updated List - ${newValue}`);
+      },
+      deep: true
     }
   },
 };
@@ -105,32 +123,8 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
+  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-label {
-  font-weight: bold;
-  display: flex;
-  margin-bottom: 5px;
-}
-input + label {
-  font-weight: bold;
-  display: inline-flex;
-  margin-right: 20px;
-}
-input[type="text"],
-textarea,
-select {
-  display: block;
-  width: 400px;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.428;
-  color: #555;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }
 </style>
